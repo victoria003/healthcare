@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "next build && opennextjs-cloudflare build",
+    "build": "opennextjs-cloudflare build",
     "dev": "next dev -p 3000 --webpack",
     "start": "next start -p 3000 --webpack",
     "clean": "rm -rf .next dist",
