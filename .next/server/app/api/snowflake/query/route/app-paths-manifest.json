@@ -1,0 +1,3 @@
+{
+  "/api/snowflake/query/route": "app/api/snowflake/query/route.js"
+}

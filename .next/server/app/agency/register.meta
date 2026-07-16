@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/agency/layout,_N_T_/agency/register/layout,_N_T_/agency/register/page,_N_T_/agency/register"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/agency/register/__PAGE__",
+    "/agency/register",
+    "/agency",
+    "/_index",
+    "/_head"
+  ]
+}

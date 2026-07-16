@@ -1,0 +1,12 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/sos/trigger/route.js")
+R.c("server/chunks/node_modules_bcryptjs_index_0k82xso.js")
+R.c("server/chunks/[root-of-the-server]__0zq83zi._.js")
+R.c("server/chunks/lib_auth_jwt_ts_01tg_8k._.js")
+R.c("server/chunks/_076boh-._.js")
+R.c("server/chunks/[root-of-the-server]__15bjnu5._.js")
+R.c("server/chunks/[root-of-the-server]__0v3yl2n._.js")
+R.c("server/chunks/[root-of-the-server]__1u2pe0l._.js")
+R.c("server/chunks/node_modules_next_08s853w._.js")
+R.c("server/chunks/_next-internal_server_app_api_sos_trigger_route_actions_08bpj92.js")
+R.m(15282)
+module.exports=R.m(15282).exports

@@ -1,0 +1,9 @@
+{
+  "name": "HomeCare Marketplace",
+  "description": "Enterprise Home Healthcare Marketplace SaaS for agencies, patients, and caregivers with real-time tracking, AI care plans, and Snowflake data integration.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
