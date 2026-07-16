@@ -1,3 +1,0 @@
-module.exports=[63588,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function(){return(0,b.jsxs)("div",{className:"flex flex-col items-center justify-center min-h-screen bg-bg-alt",children:[(0,b.jsxs)("div",{className:"relative w-16 h-16",children:[(0,b.jsx)("div",{className:"absolute inset-0 rounded-full border-4 border-border"}),(0,b.jsx)("div",{className:"absolute inset-0 rounded-full border-4 border-accent border-t-transparent animate-spin"})]}),(0,b.jsx)("h3",{className:"mt-6 text-base font-semibold tracking-wide text-text-secondary uppercase",children:"Loading Marketplace Resources..."})]})}])},45538,a=>{a.n(a.i(63588))}];
-
-//# sourceMappingURL=app_loading_tsx_0a1flg9._.js.map

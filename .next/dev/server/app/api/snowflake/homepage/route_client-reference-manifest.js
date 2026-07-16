@@ -1,1 +1,0 @@
-globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/api/snowflake/homepage/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"C:\\Users\\victo\\OneDrive\\Desktop\\health care\\app\\api\\snowflake\\homepage\\route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};
