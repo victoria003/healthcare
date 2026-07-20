@@ -1,259 +1,405 @@
 "use client";
 
-import React, { useState, useEffect } from"react";
-import { useRouter } from"next/navigation";
-import { ShieldCheck, Users, Calendar, Star, ArrowRight, Activity, ShieldAlert, Bell, Clock, TrendingUp, CheckCircle2, AlertCircle } from"lucide-react";
-import DashboardCard from"@/components/dashboard/DashboardCard";
-import SectionHeader from"@/components/dashboard/SectionHeader";
-import PrimaryButton from"@/components/dashboard/PrimaryButton";
-import SecondaryButton from"@/components/dashboard/SecondaryButton";
-import { organizationService, MockOrganization } from"@/lib/services/organization.service";
+import React from "react";
+import { 
+  Calendar, 
+  FileText, 
+  Users, 
+  Wallet, 
+  ChevronRight, 
+  MapPin,
+  Star,
+  Phone,
+  CheckCircle2,
+  XCircle,
+  Plus,
+  ChevronLeft
+} from "lucide-react";
 
 export default function AgencyDashboardPage() {
- const router = useRouter();
- const [organization, setOrganization] = useState<MockOrganization | undefined>(undefined);
- const [loading, setLoading] = useState(true);
+  
+  const mockSchedule = [
+    { time: "09:00 AM", patient: "Mrs. Lakshmi Devi", service: "Nursing Visit", status: "Completed", statusColor: "#16A34A", statusBg: "#DCFCE7", circleColor: "#2563EB" },
+    { time: "10:30 AM", patient: "Mr. Ramesh Kumar", service: "Physiotherapy", status: "Ongoing", statusColor: "#2563EB", statusBg: "#DBEAFE", circleColor: "#2563EB" },
+    { time: "12:00 PM", patient: "Medication Visit", service: "John Doe", status: "Pending", statusColor: "#EA580C", statusBg: "#FFEDD5", circleColor: "#F97316" },
+    { time: "02:30 PM", patient: "Elder Care", service: "Mrs. Saraswathi", status: "Upcoming", statusColor: "#9333EA", statusBg: "#F3E8FF", circleColor: "#A855F7" },
+  ];
 
- useEffect(() => {
- setLoading(true);
- // Fetch default organization
- organizationService.getOrganizations()
- .then((data) => {
- if (data && data.length > 0) {
- setOrganization(data[0]); // Select first agency (o1)
- }
- })
- .catch((err) => console.error("Error loading agency details:", err))
- .finally(() => setLoading(false));
- }, []);
+  const mockRequests = [
+    { name: "Mrs. Devi Lakshmi", role: "Registered Nurse", date: "Today, 11:30 AM", distance: "4.2 km away", priority: "Urgent", priorityColor: "#DC2626", priorityBg: "#FEE2E2", initials: "DL" },
+    { name: "Mr. Rao Srinivas", role: "Physiotherapist", date: "Tomorrow, 09:00 AM", distance: "6.1 km away", priority: "Normal", priorityColor: "#D97706", priorityBg: "#FEF3C7", initials: "RS" },
+  ];
 
- const mockRequests = [
- { id:"HC-B-991", name:"Anita Sharma", service:"Doctor Visit", date:"2026-07-16", status:"Pending" },
- { id:"HC-B-992", name:"Rajesh Kumar", service:"Physiotherapy", date:"2026-07-17", status:"Confirmed" },
- { id:"HC-B-993", name:"Vikas Patel", service:"Wound Nursing", date:"2026-07-18", status:"Completed" },
- ];
+  const mockCaregivers = [
+    { name: "Sarah Johnson", role: "Registered Nurse", rating: "4.8 (126)", status: "Available", initials: "SJ" },
+    { name: "Rahul Verma", role: "Patient Attender", rating: "4.6 (98)", status: "Available", initials: "RV" },
+    { name: "Priya Nair", role: "Elder Care", rating: "4.7 (76)", status: "Available", initials: "PN" },
+  ];
 
- const mockStaff = [
- { name:"Dr. Suresh Kumar", category:"Doctor", availability:"Available", rating: 4.9 },
- { name:"Priyanjali Sen", category:"Nurse", availability:"On Shift", rating: 4.8 },
- { name:"Mahesh Babu", category:"Caregiver", availability:"Available", rating: 4.7 },
- ];
+  const mockLiveVisits = [
+    { caregiver: "Nurse Sarah", patient: "Visiting Mr. Kumar", status: "On the way", time: "", icon: "phone" },
+    { caregiver: "David", patient: "Visiting Mrs. Anita", status: "Ongoing", time: "Started 10:20 AM", icon: "phone" },
+    { caregiver: "Mary", patient: "Visiting Mr. Iqbal", status: "Completed", time: "Today, 09:15 AM", icon: "check" },
+  ];
 
- if (loading) {
- return (
- <div className="flex items-center justify-center min-h-[50vh]">
- <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600" />
- </div>
- );
- }
+  const cardStyle = {
+    background: "#FFFFFF",
+    borderRadius: "24px",
+    boxShadow: "0 10px 30px rgba(15,23,42,0.06)",
+    border: "1px solid #E5E7EB",
+    padding: "28px"
+  };
 
- const agencyName = organization ? organization.name :"CareFirst Agency";
- const verified = organization ? organization.verified : true;
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "32px", paddingBottom: "40px" }}>
+      
+      {/* HERO SECTION */}
+      <section style={{
+        height: "320px",
+        borderRadius: "32px",
+        background: "linear-gradient(90deg, #F0F7FF 0%, #E0EFFF 100%)",
+        border: "1px solid rgba(255,255,255,0.5)",
+        display: "grid",
+        gridTemplateColumns: "1fr 40%",
+        overflow: "hidden",
+        position: "relative"
+      }}>
+        {/* Left Side */}
+        <div style={{ padding: "40px", display: "grid", gridTemplateRows: "auto auto auto", gap: "24px", zIndex: 10 }}>
+          
+          <div style={{ display: "grid", gap: "8px" }}>
+            <h1 style={{ margin: 0, fontSize: "48px", fontWeight: 700, color: "#0F172A", lineHeight: 1.1 }}>
+              <span style={{ fontSize: "28px", display: "block", marginBottom: "4px" }}>Good morning, 👋</span>
+              HopeCare Agency
+            </h1>
+            <p style={{ margin: 0, fontSize: "16px", color: "#64748B" }}>Here's what's happening with your agency today.</p>
+          </div>
 
- const statusColor = (status: string) => {
- if (status ==="Pending") return"bg-bg text-accent-light";
- if (status ==="Confirmed") return"bg-bg text-secondary";
- return"bg-accent-light text-accent";
- };
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1.2fr", gap: "16px" }}>
+            
+            {/* KPI 1 */}
+            <div style={{ background: "#FFF", borderRadius: "20px", padding: "16px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "16px", alignItems: "center", border: "1px solid #FFF", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", background: "#EFF6FF", borderRadius: "12px", display: "grid", placeItems: "center", color: "#2563EB" }}>
+                <Calendar size={24} />
+              </div>
+              <div style={{ display: "grid", gap: "2px" }}>
+                <p style={{ margin: 0, fontSize: "24px", fontWeight: 700, color: "#0F172A", lineHeight: 1 }}>14</p>
+                <p style={{ margin: 0, fontSize: "12px", fontWeight: 600, color: "#0F172A" }}>Visits Today</p>
+                <p style={{ margin: 0, fontSize: "11px", color: "#64748B" }}>Scheduled</p>
+              </div>
+            </div>
 
- return (
- <div className="space-y-12">
+            {/* KPI 2 */}
+            <div style={{ background: "#FFF", borderRadius: "20px", padding: "16px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "16px", alignItems: "center", border: "1px solid #FFF", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", background: "#F5F3FF", borderRadius: "12px", display: "grid", placeItems: "center", color: "#9333EA" }}>
+                <FileText size={24} />
+              </div>
+              <div style={{ display: "grid", gap: "2px" }}>
+                <p style={{ margin: 0, fontSize: "24px", fontWeight: 700, color: "#0F172A", lineHeight: 1 }}>6</p>
+                <p style={{ margin: 0, fontSize: "12px", fontWeight: 600, color: "#0F172A" }}>New Requests</p>
+                <p style={{ margin: 0, fontSize: "11px", color: "#64748B" }}>Pending</p>
+              </div>
+            </div>
 
- {/* ─── Section 1: Welcome ─── */}
- <div>
- <div className="flex flex-wrap items-center gap-6">
- <h1 className="text-2xl sm:text-3xl font-bold text-primary tracking-tight">
- {agencyName}
- </h1>
- {verified && (
- <span className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-accent-light text-accent text-sm font-medium">
- <ShieldCheck className="w-3.5 h-3.5" />
- Verified
- </span>
- )}
- </div>
- <p className="text-base text-text-tertiary mt-2">
- Agency Dashboard &middot; Premium Enterprise Partner
- </p>
- </div>
+            {/* KPI 3 */}
+            <div style={{ background: "#FFF", borderRadius: "20px", padding: "16px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "16px", alignItems: "center", border: "1px solid #FFF", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", background: "#ECFDF5", borderRadius: "12px", display: "grid", placeItems: "center", color: "#10B981" }}>
+                <Users size={24} />
+              </div>
+              <div style={{ display: "grid", gap: "2px" }}>
+                <p style={{ margin: 0, fontSize: "24px", fontWeight: 700, color: "#0F172A", lineHeight: 1 }}>4</p>
+                <p style={{ margin: 0, fontSize: "12px", fontWeight: 600, color: "#0F172A" }}>Available Caregivers</p>
+                <p style={{ margin: 0, fontSize: "11px", color: "#64748B" }}>Right now</p>
+              </div>
+            </div>
 
- {/* ─── Section 2: KPI Stats ─── */}
- <section>
- <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-6">
- {[
- { label:"Active Professionals", value:"14", icon: <Users className="w-4 h-4" />, color:"text-secondary bg-bg" },
- { label:"Pending Requests", value:"3", icon: <Clock className="w-4 h-4" />, color:"text-accent-light bg-bg" },
- { label:"Completed Bookings", value:"128", icon: <CheckCircle2 className="w-4 h-4" />, color:"text-accent bg-accent-light" },
- { label:"Avg. Rating", value:"4.8", icon: <Star className="w-4 h-4" />, color:"text-accent-light bg-bg" },
- ].map((stat) => (
- <DashboardCard key={stat.label} className="!p-8">
- <div className={`w-9 h-9 rounded-xl ${stat.color} flex items-center justify-center mb-4`}>
- {stat.icon}
- </div>
- <p className="text-2xl font-bold text-primary">{stat.value}</p>
- <p className="text-sm text-text-tertiary mt-1">{stat.label}</p>
- </DashboardCard>
- ))}
- </div>
- </section>
+            {/* KPI 4 */}
+            <div style={{ background: "#FFF", borderRadius: "20px", padding: "16px", display: "grid", gridTemplateColumns: "auto 1fr", gap: "16px", alignItems: "center", border: "1px solid #FFF", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", background: "#FFF7ED", borderRadius: "12px", display: "grid", placeItems: "center", color: "#EA580C" }}>
+                <Wallet size={24} />
+              </div>
+              <div style={{ display: "grid", gap: "2px" }}>
+                <p style={{ margin: 0, fontSize: "24px", fontWeight: 700, color: "#0F172A", lineHeight: 1 }}>₹18,400</p>
+                <p style={{ margin: 0, fontSize: "12px", fontWeight: 600, color: "#0F172A" }}>Today's Revenue</p>
+                <p style={{ margin: 0, fontSize: "11px", color: "#64748B" }}>From 11 bookings</p>
+              </div>
+            </div>
+            
+          </div>
 
- {/* ─── Section 3: Main Content ─── */}
- <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
- {/* Left: Requests + Staff */}
- <div className="lg:col-span-3 space-y-12">
- {/* Booking Requests */}
- <section>
- <SectionHeader
- title="Recent Booking Requests"
- actionButton={
- <button
- onClick={() => router.push("/agency/booking-requests")}
- className="text-sm text-accent-light hover:text-accent-light font-medium transition-colors"
- >
- View all
- </button>
- }
- />
- <div className="space-y-3">
- {mockRequests.map((req) => (
- <DashboardCard key={req.id} className="!p-6 flex items-center justify-between gap-6">
- <div className="min-w-0">
- <div className="flex items-center gap-6 mb-1">
- <h4 className="text-base font-semibold text-primary truncate">{req.name}</h4>
- <span className={`text-base font-medium px-3 py-2.5 rounded-full shrink-0 ${statusColor(req.status)}`}>
- {req.status}
- </span>
- </div>
- <div className="flex items-center gap-6 text-sm text-text-tertiary">
- <span>{req.service}</span>
- <span className="text-white">&middot;</span>
- <span>{req.date}</span>
- <span className="text-white">&middot;</span>
- <span className="text-text-tertiary">{req.id}</span>
- </div>
- </div>
- <button
- onClick={() => router.push(`/agency/booking-requests/${req.id}`)}
- className="text-sm text-text-tertiary hover:text-accent-light font-medium transition-colors shrink-0"
- >
- View
- </button>
- </DashboardCard>
- ))}
- </div>
- </section>
+          <div style={{ display: "grid", gridTemplateColumns: "auto auto", gap: "16px", justifyContent: "start", marginTop: "auto" }}>
+            <button style={{ background: "#2563EB", color: "#FFF", border: "none", padding: "12px 24px", borderRadius: "100px", fontSize: "14px", fontWeight: 600, display: "grid", gridTemplateColumns: "auto auto", gap: "12px", alignItems: "center", cursor: "pointer", boxShadow: "0 4px 12px rgba(37,99,235,0.2)" }}>
+              Review Requests
+              <span style={{ width: "20px", height: "20px", background: "#EF4444", borderRadius: "10px", display: "grid", placeItems: "center", fontSize: "11px" }}>6</span>
+            </button>
+            <button style={{ background: "#FFF", color: "#2563EB", border: "1px solid #FFF", padding: "12px 24px", borderRadius: "100px", fontSize: "14px", fontWeight: 600, display: "grid", gridTemplateColumns: "auto auto", gap: "12px", alignItems: "center", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}>
+              Create Booking
+              <Plus size={16} />
+            </button>
+          </div>
 
- {/* Assigned Professionals */}
- <section>
- <SectionHeader
- title="Team Members"
- actionButton={
- <button
- onClick={() => router.push("/agency/professionals")}
- className="text-sm text-accent-light hover:text-accent-light font-medium transition-colors"
- >
- Manage team
- </button>
- }
- />
- <div className="space-y-3">
- {mockStaff.map((staff) => (
- <DashboardCard key={staff.name} className="!p-6 flex items-center justify-between gap-6">
- <div className="flex items-center gap-6 min-w-0">
- <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-white flex items-center justify-center font-semibold text-base shrink-0">
- {staff.name.charAt(0)}
- </div>
- <div className="min-w-0">
- <h4 className="text-base font-semibold text-primary truncate">{staff.name}</h4>
- <p className="text-sm text-text-tertiary">{staff.category}</p>
- </div>
- </div>
- <div className="flex items-center gap-6 shrink-0">
- <span className={`text-[12px] font-medium px-3 py-2.5 rounded-full ${
- staff.availability ==="Available"
- ?"bg-accent-light text-accent"
- :"bg-bg text-secondary"
- }`}>
- {staff.availability}
- </span>
- <span className="flex items-center gap-1 text-base font-medium text-text-secondary">
- <Star className="w-3.5 h-3.5 text-accent-light fill-amber-500" />
- {staff.rating}
- </span>
- </div>
- </DashboardCard>
- ))}
- </div>
- </section>
- </div>
+        </div>
 
- {/* Right: Quick Actions + Performance + Alerts */}
- <div className="lg:col-span-2 space-y-8">
- {/* Quick Actions */}
- <section>
- <SectionHeader title="Quick Actions" />
- <div className="space-y-2">
- {[
- { label:"Manage Professionals", href:"/agency/professionals" },
- { label:"Booking Requests", href:"/agency/booking-requests" },
- { label:"Organization Profile", href:"/agency/profile" },
- { label:"Reports", href:"/agency/reports" },
- ].map((action) => (
- <button
- key={action.label}
- onClick={() => router.push(action.href)}
- className="w-full group flex items-center justify-between px-5 py-4 rounded-xl bg-white [#12121a] border border-border/60 hover:border-accent-light :border-orange-900/40 transition-all text-base font-medium text-text-secondary hover:text-accent-light :text-orange-400"
- >
- {action.label}
- <ArrowRight className="w-4 h-4 text-white group-hover:text-accent-light group-hover:translate-x-0.5 transition-all" />
- </button>
- ))}
- </div>
- </section>
+        {/* Right Illustration */}
+        <div style={{ position: "relative", display: "grid", placeItems: "end", height: "100%" }}>
+          <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: "150%", background: "rgba(37,99,235,0.05)", borderTopLeftRadius: "100%", zIndex: 1 }}></div>
+          <div style={{ width: "320px", height: "320px", background: "linear-gradient(45deg, #BFDBFE, #DBEAFE)", borderTopLeftRadius: "50%", borderTopRightRadius: "50%", position: "absolute", right: "40px", bottom: 0, zIndex: 2, display: "grid", placeItems: "center", overflow: "hidden", boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}>
+             <Users size={120} color="#2563EB" opacity={0.2} />
+             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "160px", background: "linear-gradient(to top, rgba(37,99,235,0.1), transparent)" }}></div>
+          </div>
+        </div>
+      </section>
 
- {/* Performance Summary */}
- <section>
- <SectionHeader title="Performance" />
- <DashboardCard>
- <div className="space-y-3">
- {[
- { label:"Total Bookings", value:"145", color:"text-primary" },
- { label:"Completed", value:"128", color:"text-accent" },
- { label:"Pending", value:"12", color:"text-accent-light" },
- { label:"Cancelled", value:"5", color:"text-rose-500" },
- ].map((row, idx) => (
- <div key={row.label} className={`flex justify-between items-center py-2 ${idx < 3 ?"border-b border-border-light" :""}`}>
- <span className="text-sm text-text-tertiary">{row.label}</span>
- <span className={`text-base font-semibold ${row.color}`}>{row.value}</span>
- </div>
- ))}
- </div>
- </DashboardCard>
- </section>
+      {/* ROW 2 */}
+      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+        
+        {/* Today's Schedule */}
+        <div style={cardStyle}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", marginBottom: "32px" }}>
+            <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 700, color: "#0F172A" }}>Today's Schedule</h2>
+            <button style={{ background: "none", border: "none", color: "#2563EB", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>View Full Schedule</button>
+          </div>
 
- {/* Alerts */}
- <section>
- <SectionHeader title="Alerts" />
- <div className="space-y-3">
- {[
- { icon: <ShieldAlert className="w-4 h-4" />, title:"Verification Alert", desc:"Verify pending provider credential uploads.", color:"text-rose-500 bg-rose-50" },
- { icon: <Bell className="w-4 h-4" />, title:"Organization Alert", desc:"Plan renewal due in next 45 days.", color:"text-accent-light bg-bg" },
- { icon: <Activity className="w-4 h-4" />, title:"System Alert", desc:"Scheduled database sync on Sunday.", color:"text-secondary bg-bg" },
- ].map((alert) => (
- <div key={alert.title} className="flex items-start gap-6 p-6 bg-white [#12121a] border border-border/60 rounded-xl">
- <div className={`w-8 h-8 rounded-lg ${alert.color} flex items-center justify-center shrink-0`}>
- {alert.icon}
- </div>
- <div>
- <p className="text-base font-medium text-primary">{alert.title}</p>
- <p className="text-sm text-text-tertiary mt-0.5 leading-relaxed">{alert.desc}</p>
- </div>
- </div>
- ))}
- </div>
- </section>
- </div>
- </div>
- </div>
- );
+          <div style={{ position: "relative", display: "grid", gap: "32px", paddingLeft: "100px", minHeight: "260px" }}>
+            {/* Connector Line */}
+            <div style={{ position: "absolute", left: "70px", top: "10px", bottom: "10px", width: "1px", background: "#E5E7EB" }}></div>
+
+            {mockSchedule.map((item, idx) => (
+              <div key={idx} style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", position: "relative" }}>
+                
+                {/* Time & Node */}
+                <div style={{ position: "absolute", left: "-100px", width: "70px", textAlign: "right" }}>
+                  <span style={{ fontSize: "13px", fontWeight: 500, color: "#64748B" }}>{item.time}</span>
+                </div>
+                <div style={{ position: "absolute", left: "-35px", width: "12px", height: "12px", background: "#FFF", border: `2px solid ${item.circleColor}`, borderRadius: "6px", zIndex: 2 }}></div>
+                
+                {/* Content */}
+                <div style={{ display: "grid", gap: "2px" }}>
+                  <h4 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#0F172A" }}>{item.patient}</h4>
+                  <p style={{ margin: 0, fontSize: "13px", color: "#64748B" }}>{item.service}</p>
+                </div>
+
+                <span style={{ background: item.statusBg, color: item.statusColor, fontSize: "12px", fontWeight: 600, padding: "4px 12px", borderRadius: "100px" }}>
+                  {item.status}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: "32px", display: "grid", placeItems: "center" }}>
+             <button style={{ background: "none", border: "none", color: "#2563EB", fontSize: "14px", fontWeight: 600, cursor: "pointer", display: "grid", gridTemplateColumns: "auto auto", gap: "4px", alignItems: "center" }}>
+               View Full Schedule <ChevronRight size={16} />
+             </button>
+          </div>
+        </div>
+
+        {/* New Patient Requests */}
+        <div style={cardStyle}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", marginBottom: "32px" }}>
+            <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 700, color: "#0F172A" }}>New Patient Requests</h2>
+            <button style={{ background: "none", border: "none", color: "#2563EB", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>View All</button>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "16px" }}>
+            {mockRequests.map((req, idx) => (
+              <div key={idx} style={{ padding: "20px", borderRadius: "16px", border: "1px solid #E5E7EB", background: "#FAFAFA", display: "grid", gridTemplateColumns: "auto 1fr", gap: "16px" }}>
+                <div style={{ width: "52px", height: "52px", borderRadius: "26px", background: "#E5E7EB", display: "grid", placeItems: "center", color: "#64748B", fontSize: "18px", fontWeight: 700 }}>
+                  {req.initials}
+                </div>
+                
+                <div style={{ display: "grid", gap: "12px" }}>
+                  
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "8px", alignItems: "start" }}>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#0F172A" }}>{req.name}</h4>
+                      <p style={{ margin: 0, fontSize: "13px", color: "#64748B" }}>{req.role}</p>
+                    </div>
+                    <span style={{ background: req.priorityBg, color: req.priorityColor, fontSize: "11px", fontWeight: 600, padding: "2px 8px", borderRadius: "4px", display: "grid", gridTemplateColumns: "auto auto", gap: "4px", alignItems: "center" }}>
+                      <MapPin size={12} /> {req.priority}
+                    </span>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "auto auto", gap: "16px", justifyContent: "start" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "auto auto", gap: "6px", alignItems: "center", fontSize: "12px", color: "#64748B" }}>
+                      <Calendar size={14} /> {req.date}
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "auto auto", gap: "6px", alignItems: "center", fontSize: "12px", color: "#64748B" }}>
+                      <MapPin size={14} /> {req.distance}
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <button style={{ background: "#2563EB", color: "#FFF", border: "none", padding: "8px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>Accept</button>
+                    <button style={{ background: "#FFF", color: "#0F172A", border: "1px solid #E5E7EB", padding: "8px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>View</button>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </section>
+
+      {/* ROW 3 */}
+      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+        
+        {/* Available Caregivers */}
+        <div style={cardStyle}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", marginBottom: "32px" }}>
+            <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 700, color: "#0F172A" }}>Available Caregivers</h2>
+            <button style={{ background: "none", border: "none", color: "#2563EB", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>View All</button>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "16px", alignItems: "center" }}>
+            <button style={{ width: "32px", height: "32px", borderRadius: "16px", border: "1px solid #E5E7EB", background: "#FFF", display: "grid", placeItems: "center", color: "#94A3B8", cursor: "pointer" }}>
+              <ChevronLeft size={16} />
+            </button>
+            
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+              {mockCaregivers.map((cg, idx) => (
+                <div key={idx} style={{ padding: "16px", borderRadius: "16px", border: "1px solid #E5E7EB", background: "#FFF", display: "grid", gap: "8px", justifyItems: "center", textAlign: "center" }}>
+                  <div style={{ width: "52px", height: "52px", borderRadius: "26px", background: "#DBEAFE", color: "#2563EB", display: "grid", placeItems: "center", fontSize: "18px", fontWeight: 700, marginBottom: "8px" }}>
+                    {cg.initials}
+                  </div>
+                  <h4 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#0F172A" }}>{cg.name}</h4>
+                  <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>{cg.role}</p>
+                  
+                  <div style={{ display: "grid", gridTemplateColumns: "auto auto", gap: "4px", alignItems: "center", fontSize: "12px", fontWeight: 600, color: "#64748B", marginBottom: "4px" }}>
+                    <Star size={14} color="#FBBF24" fill="#FBBF24" /> {cg.rating}
+                  </div>
+                  
+                  <span style={{ background: "#DCFCE7", color: "#16A34A", fontSize: "11px", fontWeight: 600, padding: "2px 8px", borderRadius: "4px", marginBottom: "16px" }}>
+                    {cg.status}
+                  </span>
+                  
+                  <button style={{ width: "100%", background: "#FFF", color: "#2563EB", border: "1px solid #BFDBFE", padding: "6px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>
+                    Assign
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button style={{ width: "32px", height: "32px", borderRadius: "16px", border: "1px solid #E5E7EB", background: "#FFF", display: "grid", placeItems: "center", color: "#94A3B8", cursor: "pointer" }}>
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Live Visits */}
+        <div style={cardStyle}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", marginBottom: "32px" }}>
+            <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 700, color: "#0F172A" }}>Live Visits</h2>
+            <button style={{ background: "none", border: "none", color: "#2563EB", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>View All</button>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px" }}>
+            {mockLiveVisits.map((visit, idx) => (
+              <div key={idx} style={{ display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "12px", alignItems: "center" }}>
+                <div style={{ width: "40px", height: "40px", borderRadius: "20px", background: "#DBEAFE", color: "#2563EB", display: "grid", placeItems: "center", fontSize: "14px", fontWeight: 700 }}>
+                  {visit.caregiver.charAt(0)}
+                </div>
+                
+                <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "16px", alignItems: "center" }}>
+                  <h4 style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: "#0F172A" }}>{visit.caregiver}</h4>
+                  <p style={{ margin: 0, fontSize: "13px", color: "#64748B" }}>{visit.patient}</p>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "auto auto", gap: "24px", alignItems: "center" }}>
+                  <div style={{ display: "grid", justifyItems: "end", gap: "4px" }}>
+                    <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#16A34A", display: "grid", gridTemplateColumns: "auto auto", gap: "6px", alignItems: "center" }}>
+                      <span style={{ width: "6px", height: "6px", borderRadius: "3px", background: "#22C55E" }}></span>
+                      {visit.status}
+                    </p>
+                    {visit.time && <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>{visit.time}</p>}
+                  </div>
+                  
+                  <button style={{ width: "32px", height: "32px", borderRadius: "16px", border: "1px solid #E5E7EB", background: "#FFF", display: "grid", placeItems: "center", color: "#94A3B8", cursor: "pointer" }}>
+                    {visit.icon === 'phone' ? <Phone size={16} /> : <CheckCircle2 size={16} />}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </section>
+
+      {/* ROW 4: Recent Activity */}
+      <section style={cardStyle}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", marginBottom: "32px" }}>
+          <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 700, color: "#0F172A" }}>Recent Activity</h2>
+          <button style={{ background: "none", border: "none", color: "#2563EB", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>View All</button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr auto 1fr auto 1fr auto 1fr", gap: "16px", alignItems: "start" }}>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "12px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "20px", background: "#DCFCE7", color: "#16A34A", display: "grid", placeItems: "center" }}>
+              <CheckCircle2 size={20} />
+            </div>
+            <div style={{ display: "grid", gap: "4px" }}>
+              <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#0F172A", lineHeight: 1.4 }}>Visit completed for<br/>Mr. Kumar</p>
+              <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>5 mins ago</p>
+            </div>
+          </div>
+          
+          <div style={{ width: "1px", height: "40px", background: "#E5E7EB", marginTop: "4px" }}></div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "12px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "20px", background: "#DBEAFE", color: "#2563EB", display: "grid", placeItems: "center" }}>
+              <FileText size={20} />
+            </div>
+            <div style={{ display: "grid", gap: "4px" }}>
+              <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#0F172A", lineHeight: 1.4 }}>Invoice #INV-2024-125<br/>paid by Mrs. Devi</p>
+              <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>20 mins ago</p>
+            </div>
+          </div>
+          
+          <div style={{ width: "1px", height: "40px", background: "#E5E7EB", marginTop: "4px" }}></div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "12px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "20px", background: "#FEF3C7", color: "#D97706", display: "grid", placeItems: "center" }}>
+              <Star size={20} fill="currentColor" />
+            </div>
+            <div style={{ display: "grid", gap: "4px" }}>
+              <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#0F172A", lineHeight: 1.4 }}>New review received<br/>for Sarah Johnson</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center" }}>
+                <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>1 hour ago</p>
+                <div style={{ display: "grid", gridTemplateColumns: "auto auto auto auto auto", gap: "2px" }}>
+                  {[1,2,3,4,5].map(i => <Star key={i} size={10} color="#FBBF24" fill="#FBBF24" />)}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ width: "1px", height: "40px", background: "#E5E7EB", marginTop: "4px" }}></div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "12px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "20px", background: "#F3E8FF", color: "#9333EA", display: "grid", placeItems: "center" }}>
+              <FileText size={20} />
+            </div>
+            <div style={{ display: "grid", gap: "4px" }}>
+              <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#0F172A", lineHeight: 1.4 }}>New booking request<br/>received</p>
+              <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>2 hours ago</p>
+            </div>
+          </div>
+
+          <div style={{ width: "1px", height: "40px", background: "#E5E7EB", marginTop: "4px" }}></div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "12px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "20px", background: "#FEE2E2", color: "#DC2626", display: "grid", placeItems: "center" }}>
+              <XCircle size={20} />
+            </div>
+            <div style={{ display: "grid", gap: "4px" }}>
+              <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#0F172A", lineHeight: 1.4 }}>Booking cancelled for<br/>tomorrow 10:00 AM</p>
+              <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>3 hours ago</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  );
 }
